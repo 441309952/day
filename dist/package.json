@@ -1,0 +1,18 @@
+{
+  "name": "nw-demo",
+  "main": "index.html",
+  "nodejs":true,
+   "window": {
+    "title": "读取手机信息",
+    "toolbar": true,
+    "width": 500,
+    "height": 500,
+   "resizable":true,
+   "show_in_taskbar":true,
+   "frame":true,
+   "kiosk":false
+  },
+  "webkit":{
+  "plugin":true
+  }
+}

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<title>cases</title>
+<link type="text/css" rel="stylesheet" href="css/tz.css"></link>
+<link type="text/css" rel="stylesheet" href="css/case.css"></link>
+<style>
+	.test1{
+		position:absolute;
+		height:60px;
+		top: 2%;
+    	left: 2%;
+    	right: 2%;
+    	bottom: 2%;
+		box-shadow:0px 0px 12px rgba(0,255,255,0.5);
+		border:1px solid rgba(127,255,255,0.25);
+		border-radius:3px;
+		color:rgba(127,255,255,0.75);
+		/* background-color:rgba(0,255,255,0.1); */
+		background-color:rgba(0,0,0,.5);
+		text-align:center;
+	}
+
+	.test2{
+		width: 23%;
+    	float: left;
+		height:60px;
+		line-height:60px;
+		padding-left: 1%;
+		padding-right: 1%;
+		font-family:'汉仪菱心体简';
+		display:block;
+		box-shadow:0px 0px 12px rgba(0,255,255,0.5);
+		border:1px solid rgba(127,255,255,0.7);
+		border-radius:3px;
+		color:white;
+		text-align:left;
+		font-weight: bolder;
+	    font-size: 13px;
+	}
+
+	.test2 .symbol{
+		display:initial;
+		padding-left: 10px;
+		font-size: 20px;
+    	font-weight: bold;
+    	color: rgba(255,255,255,0.75);
+    	text-shadow: 0 0 10px rgba(0,255,255,0.95);
+	}
+</style>
+</head>
+<body>
+<script src="js/three.min.js"></script>
+<script src="js/tween.min.js"></script>
+<script src="js/TrackballControls.js"></script>
+<script src="js/CSS3DRenderer.js"></script>
+<script src="js/jquery-1.11.1.min.js"></script>
+
+<table id="pager">
+	<tr>
+		<td valign="top">
+			<div id="container"></div>
+				<div id='dayinfo' class='test1'>
+					<div class='test2'>开始日期:<div class='symbol'>2019-02-02</div></div>
+					<div class='test2'>补签天数:<div class='symbol'>1</div></div>
+					<div class='test2'>已签天数:<div class='symbol'>2</div></div>
+					<div class='test2'>剩余天数:<div class='symbol'>3</div></div>
+				</div>
+				<div id="menu" class="magictime puffIn">
+					<button id="table">Table</button>
+					<button id="sphere">Sphere</button>
+					<button id="helix">Helix</button>
+					<button id="grid">Grid</button>
+					<button id="getInfo" style="position: absolute;right: 5%;">get</button>
+				</div>
+			</div>
+		</td>
+		<td valign="top">
+			<div id="frame">
+				<iframe id="iframe" frameborder="0"></iframe>
+				<div id="menu" class="magictime puffIn">
+					<button id="back">Back</button>
+				</div>
+			</div>
+		</td>
+	</tr>
+</table>
+<div id="detail" class="magictime puffIn" style="display:none">
+	<div class="head">
+		<h1></h1>
+	</div>
+	<div class="body">
+		<table>
+			<tr>
+				<td width="60%" valign="top">
+					<span class="img"></span>
+				</td>
+				<td width="40%" valign="middle">
+						<p />
+						<h1 />
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<script type="text/javascript">
+
+	var win = nw.Window.get();
+	win.showDevTools()
+
+</script>
+<script type="text/javascript" src="js/case.js"></script>
+<script>
+
+	class DepositRecord {
+
+		constructor(){
+
+			this.count = 10
+
+			this.table = {}
+
+			this.dayList = []
+
+			this.removeList = []
+
+			for (let i = 1; i <= this.count; i++) { this.dayList.push(i) }
+
+			this.remainingList = this.dayList.filter((value) => !this.removeList.includes(value))
+
+			this.remainingList.forEach((value) => this.table[value] = { name: value })
+
+			init(this.table, () => {
+					this.fun()
+			});
+
+			animate();
+
+		}
+
+		fun(){
+
+			const count = Object.keys(this.table).length
+			if(!count) return console.log('没球了')
+
+			const test = Math.floor(Math.random() * count)
+			const jieguo = Object.keys(this.table)[test]
+			console.log(`在${count}位数中，随机第${test}位,结果是${jieguo}`)
+			// 删除
+			delete this.table[jieguo]
+			console.log(this.table)
+			// 添加
+			this.removeList.push(parseInt(jieguo))
+			console.log(this.removeList)
+
+			console.log('1231')
+
+			
+			let $maskClone = mask.clone().click(function () {
+
+				let $this = $(this);
+
+				$('div', $this).addClass('holeOut');
+
+				setTimeout(function () {
+					$this.remove();
+					
+					let target = objects[jieguo]['element']
+					target.parentNode.removeChild(target)
+
+				}, 1000);
+			});
+
+			$maskClone.append(initDetail({
+				desc : jieguo,
+			}));
+
+			$(document.body).append($maskClone);
+
+		}
+
+	}
+
+	new DepositRecord()
+
+</script>
+
+</body>
+</html>

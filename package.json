@@ -1,0 +1,19 @@
+{
+	"main": "index.html",
+	"name": "test",
+	"nodejs": true,
+	"version": "0.1.0",
+	"window": {
+		"title": "node-webkit demo",
+		"icon": "link.png",
+		"toolbar": true,
+		"frame": false,
+		"width": 1200,
+		"height": 900,
+		"position": "center",
+		"resizable": false
+	},
+	"webkit": {
+		"plugin": true
+	}
+}
