@@ -185,6 +185,7 @@ button:focus {
 #detail div.body table tr td{
 	height:100%;
 	text-align:center;
+	position: relative;
 }
 #detail div.body table tr td span.img{
 	height:100%;
@@ -200,7 +201,7 @@ button:focus {
     color: #908d8d;
 }
 #detail div.body table tr td p{
-	width:80%;
+	width:74%;
 	height:50px;
 	line-height:50px;
 	margin:0px 0px 0px 40px;
@@ -212,7 +213,7 @@ button:focus {
 	content:'';
 }
 #detail div.body table tr td h1{
-	width:80%;
+	width:74%;
 	height:160px;
 	padding:20px;
 	margin:30px 0px 0px 40px;
@@ -221,4 +222,15 @@ button:focus {
 }
 #detail div.body table tr td h1:before{
 	/* content:'描述：'; */
+}
+
+#detail div.body table tr td button{
+	position: absolute;
+    bottom: 0px;
+    left: 90px;
+    right: 40px;
+    margin-left: 40px;
+    font-size: 18px;
+	padding: 10px 30px;
+	box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
 }

@@ -9,6 +9,35 @@ const make = $('<div id="mask"></div>');
 
 var scene = new THREE.Scene();
 
+function shoudayinfo(that) {
+
+	const startDate = document.getElementById('startDate')
+	startDate.innerText = `${that.a} 至 ${that.b}`
+
+	const supplementCount = document.getElementById('supplementCount')
+	supplementCount.innerText = that.bb - that.removeList.length
+
+	const completeCount = document.getElementById('completeCount')
+	completeCount.innerText = that.removeList.length
+
+	const remainingCount = document.getElementById('remainingCount')
+	remainingCount.innerText = that.aa
+
+};
+
+function datedifference(sDate1, sDate2) {
+	var dateSpan,
+		iDays;
+		
+	sDate1 = typeof sDate1 === 'string' ?  Date.parse(sDate1) : sDate1 ;
+	sDate2 = typeof sDate2 ==='string' ? Date.parse(sDate2) : sDate2;
+	dateSpan = sDate2 - sDate1;
+	
+	dateSpan = Math.abs(dateSpan);
+	iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
+	return iDays
+};
+
 function initDetail({  desc = '' , author = 0 }){
 
 	var dt = $(detail.clone());
@@ -16,6 +45,7 @@ function initDetail({  desc = '' , author = 0 }){
 	$('div.body table tr td span.img', dt).text('敬请期待!');
 	$('div.body table tr td h1', dt).text(`今日签到${desc}`);
 	$('div.body table tr td p', dt).text(`存储数量:${author}`);
+	$('div.body table tr td button', dt).text(`签到`);
 
 	return dt.show();
 }

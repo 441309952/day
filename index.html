@@ -24,7 +24,7 @@
 	}
 
 	.test2{
-		width: 23%;
+		width: 18%;
     	float: left;
 		height:60px;
 		line-height:60px;
@@ -39,6 +39,12 @@
 		text-align:left;
 		font-weight: bolder;
 	    font-size: 13px;
+	}
+
+	.test2.abcd{
+		width: 38%;
+		padding-left: 1%;
+		padding-right: 1%;
 	}
 
 	.test2 .symbol{
@@ -63,10 +69,10 @@
 		<td valign="top">
 			<div id="container"></div>
 				<div id='dayinfo' class='test1'>
-					<div class='test2'>开始日期:<div class='symbol'>2019-02-02</div></div>
-					<div class='test2'>补签天数:<div class='symbol'>1</div></div>
-					<div class='test2'>已签天数:<div class='symbol'>2</div></div>
-					<div class='test2'>剩余天数:<div class='symbol'>3</div></div>
+					<div class='test2 abcd'>开始日期:<div id='startDate' class='symbol'></div></div>
+					<div class='test2'>补签天数:<div id='supplementCount' class='symbol'></div></div>
+					<div class='test2'>已签天数:<div id='completeCount' class='symbol'></div></div>
+					<div class='test2'>剩余天数:<div id='remainingCount' class='symbol'></div></div>
 				</div>
 				<div id="menu" class="magictime puffIn">
 					<button id="table">Table</button>
@@ -98,8 +104,9 @@
 					<span class="img"></span>
 				</td>
 				<td width="40%" valign="middle">
-						<p />
-						<h1 />
+						<p></p>
+						<h1></h1>
+						<button>1</button>
 				</td>
 			</tr>
 		</table>
@@ -118,19 +125,36 @@
 
 		constructor(){
 
-			this.count = 10
+			// 计算时间天数
 
-			this.table = {}
+			this.a = '2018-01-30'
+
+			this.b = '2019-01-30'
+
+			// 剩余天数
+			this.aa = datedifference(this.b, +Date.now())
+
+			// 过去天数
+			this.bb = datedifference(this.a, +Date.now())
+
+			// 计算天数天数
+			this.cc = datedifference(this.a, this.b)
 
 			this.dayList = []
 
+			// 遍历多个格子
+			for (let i = 1; i <= this.cc; i++) { this.dayList.push(i) }
+
+			
+			// 过滤已签到的日子
 			this.removeList = []
-
-			for (let i = 1; i <= this.count; i++) { this.dayList.push(i) }
-
 			this.remainingList = this.dayList.filter((value) => !this.removeList.includes(value))
 
+			// 创建数据
+			this.table = {}
 			this.remainingList.forEach((value) => this.table[value] = { name: value })
+
+			shoudayinfo(this)
 
 			init(this.table, () => {
 					this.fun()
@@ -157,6 +181,7 @@
 
 			console.log('1231')
 
+			shoudayinfo(this)
 			
 			let $maskClone = mask.clone().click(function () {
 
