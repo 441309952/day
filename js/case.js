@@ -7,6 +7,8 @@ var targets = { table: {}, sphere: {}, helix: {}, grid: {} };
 
 const make = $('<div id="mask"></div>');
 
+var scene = new THREE.Scene();
+
 function initDetail({  desc = '' , author = 0 }){
 
 	var dt = $(detail.clone());
@@ -23,7 +25,6 @@ function init(table , callback) {
 	camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
 	camera.position.z = 3000;
 
-	scene = new THREE.Scene();
 
 	$('#back').click(function(){
 		pager.animate({left:'0%'},1000);
@@ -49,37 +50,11 @@ function init(table , callback) {
 		element.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
 		element.detail = tableTarget['detail'];
 
-		// 元素块点击事件
-		// element.onclick = function(){
-
-		// 	var $maskClone = mask.clone().click(function(){
-		// 		var $this = $(this);
-		// 		$('div',$this).addClass('holeOut');
-		// 		window.setTimeout(function(){
-		// 			$this.remove();
-		// 		},1000);
-		// 	});
-		// 	$maskClone.append(initDetail(this.detail));
-		// 	$(document.body).append($maskClone);
-		// }
-
-		// // 元素块标签
-		// var number = document.createElement( 'div' );
-		// number.className = 'number';
-		// number.textContent = i+1;
-		// element.appendChild( number );
-
 		// 元素块名称
 		var symbol = document.createElement( 'div' );
 		symbol.className = 'symbol';
 		symbol.textContent = tableTarget['name'];
 		element.appendChild( symbol );
-
-		// 元素块描述
-		// var details = document.createElement( 'div' );
-		// details.className = 'details';
-		// details.innerHTML = tableTarget['spanA'] + '<br>' + tableTarget['spanB'];
-		// element.appendChild( details );
 
 		var object = new THREE.CSS3DObject( element );
 		object.position.x = Math.random() * 4000 - 2000;
@@ -180,28 +155,28 @@ function init(table , callback) {
 	var button = document.getElementById( 'table' );
 	button.addEventListener( 'click', function ( event ) {
 
-		transform( targets.table, 2000 );
+		transform('table', 2000 );
 
 	}, false );
 
 	var button = document.getElementById( 'sphere' );
 	button.addEventListener( 'click', function ( event ) {
 
-		transform( targets.sphere, 2000 );
+		transform('sphere', 2000 );
 
 	}, false );
 
 	var button = document.getElementById( 'helix' );
 	button.addEventListener( 'click', function ( event ) {
 
-		transform( targets.helix, 2000 );
+		transform('helix', 2000 );
 
 	}, false );
 
 	var button = document.getElementById( 'grid' );
 	button.addEventListener( 'click', function ( event ) {
 
-		transform( targets.grid, 2000 );
+		transform('grid', 2000 );
 
 	}, false );
 
@@ -213,7 +188,7 @@ function init(table , callback) {
 
 	}, false);
 
-	transform( targets.grid, 5000 );
+	transform('grid', 5000 );
 
 	//
 
@@ -221,14 +196,17 @@ function init(table , callback) {
 
 }
 
-function transform( targets, duration ) {
+function transform( target, duration ) {
+
+	var targetaa = targets[target]
+	
 
 	TWEEN.removeAll();
 
 	Object.keys(objects).forEach((i) => {
 
 		var object = objects[ i ];
-		var target = targets[ i ];
+		var target = targetaa[ i ];
 
 		new TWEEN.Tween( object.position )
 			.to( { x: target.position.x, y: target.position.y, z: target.position.z }, Math.random() * duration + duration )

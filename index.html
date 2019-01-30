@@ -167,8 +167,18 @@
 				setTimeout(function () {
 					$this.remove();
 					
-					let target = objects[jieguo]['element']
-					target.parentNode.removeChild(target)
+					scene.remove(objects[jieguo]);
+
+					delete objects[jieguo]
+
+					delete targets['table'][jieguo]
+
+					delete targets['sphere'][jieguo]
+
+					delete targets['helix'][jieguo]
+
+					delete targets['grid'][jieguo]
+
 
 				}, 1000);
 			});
