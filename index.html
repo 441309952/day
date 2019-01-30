@@ -106,7 +106,7 @@
 				<td width="40%" valign="middle">
 						<p></p>
 						<h1></h1>
-						<button>1</button>
+						<button id='testtt'>1</button>
 				</td>
 			</tr>
 		</table>
@@ -147,42 +147,32 @@
 
 			
 			// 过滤已签到的日子
-			this.removeList = []
+			this.removeList = [1,2,3]
 			this.remainingList = this.dayList.filter((value) => !this.removeList.includes(value))
+
+			this.countAA = 0
+			this.removeList.forEach((i)=>{
+				this.countAA += i
+			})
 
 			// 创建数据
 			this.table = {}
 			this.remainingList.forEach((value) => this.table[value] = { name: value })
 
+			// 显示数据
 			shoudayinfo(this)
 
+			// 初始化动画
 			init(this.table, () => {
 					this.fun()
 			});
-
 			animate();
 
 		}
 
 		fun(){
-
-			const count = Object.keys(this.table).length
-			if(!count) return console.log('没球了')
-
-			const test = Math.floor(Math.random() * count)
-			const jieguo = Object.keys(this.table)[test]
-			console.log(`在${count}位数中，随机第${test}位,结果是${jieguo}`)
-			// 删除
-			delete this.table[jieguo]
-			console.log(this.table)
-			// 添加
-			this.removeList.push(parseInt(jieguo))
-			console.log(this.removeList)
-
-			console.log('1231')
-
-			shoudayinfo(this)
 			
+			// 创建弹出及事件
 			let $maskClone = mask.clone().click(function () {
 
 				let $this = $(this);
@@ -191,7 +181,49 @@
 
 				setTimeout(function () {
 					$this.remove();
+				
+
+				}, 1000);
+			});
+
+			const that = this
+
+			$maskClone.append(initDetail({
+				author : that.countAA,
+				fun : function(){
+
+					// 查询是否有时间可以玩
+					const count = Object.keys(that.table).length
+					if (!count) return console.log('没球了')
+
+					// 随机数
+					const test = Math.floor(Math.random() * count)
+
+					// 结果数字
+					const jieguo = Object.keys(that.table)[test]
+
+					console.log('随机数:',test)
+					console.log('结果数字:', jieguo)
+					console.log('存在的数字:', that.table)
+
+
+					$('div.body table tr td h1').text(`今日签到${that.table[jieguo].name}`);
+
+					// 删除
+					delete that.table[jieguo]
+					// 添加
+					that.removeList.push(parseInt(jieguo))
+
+					that.countAA += parseInt(jieguo)
+
 					
+					$('div.body table tr td p').text(`存储金额: ￥${that.countAA}`);
+
+					
+
+					shoudayinfo(that)
+
+						
 					scene.remove(objects[jieguo]);
 
 					delete objects[jieguo]
@@ -205,11 +237,7 @@
 					delete targets['grid'][jieguo]
 
 
-				}, 1000);
-			});
-
-			$maskClone.append(initDetail({
-				desc : jieguo,
+				}
 			}));
 
 			$(document.body).append($maskClone);
@@ -220,7 +248,39 @@
 
 	new DepositRecord()
 
+
+	// function priceSwitch(x) {
+
+	// 		//每三位用一个逗号隔开
+	// 		var leftNum = x.split(".")[0];
+	// 		//定义数组记录截取后的价格
+	// 		var resultArray = new Array();
+
+	// 		if (leftNum.length > 3) {
+	// 			var i = true;
+	// 			while (i) {
+	// 				resultArray.push(leftNum.slice(-3));
+	// 				leftNum = leftNum.slice(0, leftNum.length - 3);
+	// 				if (leftNum.length < 4) {
+	// 					i = false;
+	// 				}
+	// 			}
+	// 			//由于从后向前截取，所以从最后一个开始遍历并存到一个新的数组，顺序调换
+	// 			var sortArray = new Array();
+	// 			for (var i = resultArray.length - 1; i >= 0; i--) {
+	// 				sortArray.push(resultArray[i]);
+	// 			}
+	// 			x = `${leftNum},${sortArray.join(",")}`
+	// 		}
+
+	// 		return `￥${x}.00`
+	// 	}
+
+	// 	console.log(priceSwitch('1234567890'))
+
 </script>
 
 </body>
 </html>
+
+

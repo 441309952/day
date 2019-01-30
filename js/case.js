@@ -38,14 +38,16 @@ function datedifference(sDate1, sDate2) {
 	return iDays
 };
 
-function initDetail({  desc = '' , author = 0 }){
+function initDetail({  author = 0, fun }){
 
 	var dt = $(detail.clone());
 	$('div.head h1', dt).text('信息详情');
 	$('div.body table tr td span.img', dt).text('敬请期待!');
-	$('div.body table tr td h1', dt).text(`今日签到${desc}`);
-	$('div.body table tr td p', dt).text(`存储数量:${author}`);
-	$('div.body table tr td button', dt).text(`签到`);
+	$('div.body table tr td p', dt).text(`存储金额: ￥${author}`);
+	$('div.body table tr td button', dt).text(`签到`).click(function (e) {
+		e.stopPropagation();
+		fun()
+	})
 
 	return dt.show();
 }
