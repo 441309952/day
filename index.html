@@ -128,9 +128,9 @@
 
 			// 计算时间天数
 
-			this.a = '2019-1-10'
+			this.a = '2019-1-31'
 
-			this.b = '2019-1-20'
+			this.b = '2019-2-3'
 
 			// 剩余天数
 			this.aa = datedifference( +Date.now() , this.b)
@@ -212,6 +212,12 @@
 			$maskClone.append(initDetail({
 				author : that.countAA,
 				fun : function(){
+
+					const demo = that.cc - that.aa - Object.keys(that.removeList).length
+
+					if(!demo){
+						return console.log('次数到底为止，明天再来')
+					}
 
 					// 查询是否有时间可以玩
 					const count = Object.keys(that.table).length
