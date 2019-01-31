@@ -57,10 +57,10 @@ function shoudayinfo(that) {
 	startDate.innerText = `${that.a} 至 ${that.b}`
 
 	const supplementCount = document.getElementById('supplementCount')
-	supplementCount.innerText = that.bb - that.removeList.length
+	supplementCount.innerText = that.cc - that.aa - Object.keys(that.removeList).length
 
 	const completeCount = document.getElementById('completeCount')
-	completeCount.innerText = that.removeList.length
+	completeCount.innerText = Object.keys(that.removeList).length
 
 	const remainingCount = document.getElementById('remainingCount')
 	remainingCount.innerText = that.aa

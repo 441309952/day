@@ -119,6 +119,7 @@
 
 </script>
 <script type="text/javascript" src="js/case.js"></script>
+<script type="text/javascript" src="js/moment.js"></script>
 <script>
 
 	class DepositRecord {
@@ -127,15 +128,15 @@
 
 			// 计算时间天数
 
-			this.a = '2019-1-11'
+			this.a = '2019-1-10'
 
-			this.b = '2019-1-31'
+			this.b = '2019-1-20'
 
 			// 剩余天数
 			this.aa = datedifference( +Date.now() , this.b)
 
 			// 过去天数
-			this.bb = datedifference(this.a, +Date.now())
+			this.bb = datedifference(+Date.now(),this.a)
 
 			// 计算天数天数
 			this.cc = datedifference(this.a, this.b)
@@ -170,12 +171,9 @@
 				return !a.includes(value)
 			})
 
-			console.log(this.remainingList)
-
 			this.countAA = 0
-			Object.keys(this.removeList).forEach((i)=>{
-
-				this.countAA += parseInt(i)
+			Object.keys(this.removeList).forEach((index,value,array)=>{
+				this.countAA += parseInt(this.removeList[index].value)
 			})
 
 			// 创建数据
@@ -231,7 +229,7 @@
 					delete that.table[jieguo]
 
 					// 添加
-					that.removeList[Object.keys(that.removeList).length + 1] = { date: 'xxx', value: jieguo }
+					that.removeList[Object.keys(that.removeList).length + 1] = { date: moment().format('YY-M-D HH:mm:ss.SSS'), value: jieguo }
 
 					that.countAA += parseInt(jieguo)
 
