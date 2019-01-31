@@ -202,11 +202,6 @@
 					// 结果数字
 					const jieguo = Object.keys(that.table)[test]
 
-					console.log('随机数:',test)
-					console.log('结果数字:', jieguo)
-					console.log('存在的数字:', that.table)
-
-
 					$('div.body table tr td h1').text(`今日签到${that.table[jieguo].name}`);
 
 					// 删除
@@ -216,8 +211,7 @@
 
 					that.countAA += parseInt(jieguo)
 
-					
-					$('div.body table tr td p').text(`存储金额: ￥${that.countAA}`);
+					$('div.body table tr td p').text(`存储金额: ${priceSwitch(that.countAA)}`);
 
 					
 
@@ -248,35 +242,6 @@
 
 	new DepositRecord()
 
-
-	// function priceSwitch(x) {
-
-	// 		//每三位用一个逗号隔开
-	// 		var leftNum = x.split(".")[0];
-	// 		//定义数组记录截取后的价格
-	// 		var resultArray = new Array();
-
-	// 		if (leftNum.length > 3) {
-	// 			var i = true;
-	// 			while (i) {
-	// 				resultArray.push(leftNum.slice(-3));
-	// 				leftNum = leftNum.slice(0, leftNum.length - 3);
-	// 				if (leftNum.length < 4) {
-	// 					i = false;
-	// 				}
-	// 			}
-	// 			//由于从后向前截取，所以从最后一个开始遍历并存到一个新的数组，顺序调换
-	// 			var sortArray = new Array();
-	// 			for (var i = resultArray.length - 1; i >= 0; i--) {
-	// 				sortArray.push(resultArray[i]);
-	// 			}
-	// 			x = `${leftNum},${sortArray.join(",")}`
-	// 		}
-
-	// 		return `￥${x}.00`
-	// 	}
-
-	// 	console.log(priceSwitch('1234567890'))
 
 </script>
 

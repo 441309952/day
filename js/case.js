@@ -9,6 +9,37 @@ const make = $('<div id="mask"></div>');
 
 var scene = new THREE.Scene();
 
+function priceSwitch(x) {
+
+	x = String(x)
+
+	//每三位用一个逗号隔开
+	var leftNum = x.split(".")[0];
+
+	//定义数组记录截取后的价格
+	var resultArray = new Array();
+
+	if (leftNum.length > 3) {
+		var i = true;
+		while (i) {
+			resultArray.push(leftNum.slice(-3));
+			leftNum = leftNum.slice(0, leftNum.length - 3);
+			if (leftNum.length < 4) {
+				i = false;
+			}
+		}
+		//由于从后向前截取，所以从最后一个开始遍历并存到一个新的数组，顺序调换
+		var sortArray = new Array();
+		for (var i = resultArray.length - 1; i >= 0; i--) {
+			sortArray.push(resultArray[i]);
+		}
+		x = `${leftNum},${sortArray.join(",")}`
+	}
+
+	return `￥${x}.00`
+}
+
+
 function shoudayinfo(that) {
 
 	const startDate = document.getElementById('startDate')
@@ -43,7 +74,7 @@ function initDetail({  author = 0, fun }){
 	var dt = $(detail.clone());
 	$('div.head h1', dt).text('信息详情');
 	$('div.body table tr td span.img', dt).text('敬请期待!');
-	$('div.body table tr td p', dt).text(`存储金额: ￥${author}`);
+	$('div.body table tr td p', dt).text(`存储金额: ${priceSwitch(author)}`);
 	$('div.body table tr td button', dt).text(`签到`).click(function (e) {
 		e.stopPropagation();
 		fun()
