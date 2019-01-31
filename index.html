@@ -127,7 +127,7 @@
 
 			// 计算时间天数
 
-			this.a = '2019-1-21'
+			this.a = '2019-1-11'
 
 			this.b = '2019-1-31'
 
@@ -158,10 +158,16 @@
 			}catch(e){
 				this.removeList = {}
 			}
-			
+
+			let a = []
+			Object.keys(this.removeList).forEach((index)=>{
+				
+				a.push(parseInt(this.removeList[index]['value']))
+
+			})
 
 			this.remainingList = this.dayList.filter((value) =>{
-				return !this.removeList[value]
+				return !a.includes(value)
 			})
 
 			console.log(this.remainingList)
@@ -225,7 +231,7 @@
 					delete that.table[jieguo]
 
 					// 添加
-					that.removeList[jieguo] = { index:  Object.keys(that.removeList).length + 1 , date: 'xxx', value: jieguo }
+					that.removeList[Object.keys(that.removeList).length + 1] = { date: 'xxx', value: jieguo }
 
 					that.countAA += parseInt(jieguo)
 
