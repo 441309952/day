@@ -221,7 +221,25 @@
 
 					// 查询是否有时间可以玩
 					const count = Object.keys(that.table).length
-					if (!count) return console.log('没球了')
+					if (!count){
+
+						const make2 = $(`<div style="position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+	bottom: 0px;
+	background-color:red;"></div>`);
+						
+						let $maskClone2 = make2.clone()
+						$maskClone2.append('????')
+						$(document.body).append($maskClone2);
+						setTimeout(function () {
+							$maskClone2.remove();
+						}, 1000);
+
+
+						return console.log('没球了')
+					}
 
 					// 随机数
 					const test = Math.floor(Math.random() * count)
