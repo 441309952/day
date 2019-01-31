@@ -127,12 +127,12 @@
 
 			// 计算时间天数
 
-			this.a = '2018-01-30'
+			this.a = '2018-1-29'
 
-			this.b = '2019-01-30'
+			this.b = '2019-1-31'
 
 			// 剩余天数
-			this.aa = datedifference(this.b, +Date.now())
+			this.aa = datedifference( +Date.now() , this.b)
 
 			// 过去天数
 			this.bb = datedifference(this.a, +Date.now())
@@ -202,7 +202,7 @@
 					// 结果数字
 					const jieguo = Object.keys(that.table)[test]
 
-					$('div.body table tr td h1').text(`今日签到${that.table[jieguo].name}`);
+					$('div.body table tr td h1').text(`此次签到${that.table[jieguo].name}`);
 
 					// 删除
 					delete that.table[jieguo]

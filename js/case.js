@@ -64,9 +64,8 @@ function datedifference(sDate1, sDate2) {
 	sDate2 = typeof sDate2 ==='string' ? Date.parse(sDate2) : sDate2;
 	dateSpan = sDate2 - sDate1;
 	
-	dateSpan = Math.abs(dateSpan);
 	iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
-	return iDays
+	return iDays < 0 ? 0 : iDays
 };
 
 function initDetail({  author = 0, fun }){
