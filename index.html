@@ -127,7 +127,7 @@
 
 			// 计算时间天数
 
-			this.a = '2018-1-29'
+			this.a = '2019-1-21'
 
 			this.b = '2019-1-31'
 
@@ -147,12 +147,29 @@
 
 			
 			// 过滤已签到的日子
-			this.removeList = [1,2,3]
-			this.remainingList = this.dayList.filter((value) => !this.removeList.includes(value))
+			const dataFiles = path.resolve(dir, `./${this.a}至${this.b}.js`)
+			if(!fs.existsSync(dataFiles))
+				fs.writeFileSync(dataFiles, '')
+
+			
+			const fsinfo = fs.readFileSync(path.resolve(dir, `./${this.a}至${this.b}.js`))
+			try{
+				this.removeList = JSON.parse(fsinfo.toString())
+			}catch(e){
+				this.removeList = {}
+			}
+			
+
+			this.remainingList = this.dayList.filter((value) =>{
+				return !this.removeList[value]
+			})
+
+			console.log(this.remainingList)
 
 			this.countAA = 0
-			this.removeList.forEach((i)=>{
-				this.countAA += i
+			Object.keys(this.removeList).forEach((i)=>{
+
+				this.countAA += parseInt(i)
 			})
 
 			// 创建数据
@@ -206,8 +223,9 @@
 
 					// 删除
 					delete that.table[jieguo]
+
 					// 添加
-					that.removeList.push(parseInt(jieguo))
+					that.removeList[jieguo] = { index:  Object.keys(that.removeList).length + 1 , date: 'xxx', value: jieguo }
 
 					that.countAA += parseInt(jieguo)
 
@@ -229,6 +247,14 @@
 					delete targets['helix'][jieguo]
 
 					delete targets['grid'][jieguo]
+
+					const dataFile = path.resolve(dir, `./${that.a}至${that.b}.js`)
+					
+					console.log(that.removeList)
+
+					
+
+					fs.writeFileSync(dataFile, JSON.stringify(that.removeList))
 
 
 				}
