@@ -304,14 +304,17 @@
 			const startDate = document.getElementById('startDate')
 			startDate.innerText = this.dataFileDirname
 
+			let supplementCountDay = this.cc - this.aa - Object.keys(this.removeList).length
 			const supplementCount = document.getElementById('supplementCount')
-			supplementCount.innerText = this.cc - this.aa - Object.keys(this.removeList).length
+			supplementCount.innerText = supplementCountDay < 0 ? 0 : supplementCountDay
 
+			let completeCountDay = Object.keys(this.removeList).length
 			const completeCount = document.getElementById('completeCount')
-			completeCount.innerText = Object.keys(this.removeList).length
+			completeCount.innerText = completeCountDay < 0 ? 0 : completeCountDay
 
+			let remainingCountDay = this.aa
 			const remainingCount = document.getElementById('remainingCount')
-			remainingCount.innerText = this.aa
+			remainingCount.innerText = remainingCountDay < 0 ? 0 : remainingCountDay
 
 		}
 
@@ -339,7 +342,7 @@
 		}
 	}
 
-	new DepositRecord({ startDate : '2018-2-1'  , endDate : '2018-5-4' })
+	new DepositRecord({ startDate : '2019-2-18'  , endDate : '2020-2-18' })
 
 
 </script>
