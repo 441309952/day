@@ -151,10 +151,6 @@ button:focus {
 	text-align:center;
 }
 
-#detail.magictime puffIn{
-	display:none
-}
-
 #detail h1,p,span{
 	font-family:'汉仪菱心体简';
 	display:block;
