@@ -6,104 +6,6 @@
 <title>cases</title>
 <link type="text/css" rel="stylesheet" href="css/tz.css"></link>
 <link type="text/css" rel="stylesheet" href="css/case.css"></link>
-<style>
-
-	body{
-		-webkit-user-select:none;
-    	-moz-user-select:none;
-    	-ms-user-select:none;
-    	user-select:none;
-	}
-
-	.test1{
-		position:absolute;
-		height:60px;
-		top: 2%;
-    	left: 2%;
-    	right: 2%;
-    	bottom: 2%;
-		box-shadow:0px 0px 12px rgba(0,255,255,0.5);
-		border:1px solid rgba(127,255,255,0.25);
-		border-radius:3px;
-		color:rgba(127,255,255,0.75);
-		/* background-color:rgba(0,255,255,0.1); */
-		background-color:rgba(0,0,0,.5);
-		text-align:center;
-	}
-
-	.test2{
-		width: 18%;
-    	float: left;
-		height:60px;
-		line-height:60px;
-		padding-left: 1%;
-		padding-right: 1%;
-		font-family:'汉仪菱心体简';
-		display:block;
-		box-shadow:0px 0px 12px rgba(0,255,255,0.5);
-		border:1px solid rgba(127,255,255,0.7);
-		border-radius:3px;
-		color:white;
-		text-align:left;
-		font-weight: bolder;
-	    font-size: 13px;
-	}
-
-	.test2.abcd{
-		width: 38%;
-		padding-left: 1%;
-		padding-right: 1%;
-	}
-
-	.test2 .symbol{
-		display:initial;
-		padding-left: 10px;
-		font-size: 20px;
-    	font-weight: bold;
-    	color: rgba(255,255,255,0.75);
-    	text-shadow: 0 0 10px rgba(0,255,255,0.95);
-	}
-
-	.test666{
-		position: absolute;
-    	top: 0px;
-    	left: 0px;
-    	right: 0px;
-		bottom: 0px;
-		opacity: 1;
-		-webkit-transition: all .5s ease-in;
-		-moz-transition: all .5s ease-in;
-		transition: all .5s ease-in;
-
-	}
-
-	.test666.test{
-		opacity: 0;
-	}
-
-	.test666 .tishi{
-		color: rgba(255,255,255,0.75);
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		top: 0;
-		margin: auto;
-		max-width: 120px;
-		height: 50px;
-		line-height: 50px;
-		text-align: center;
-		font-weight: bolder;
-		font-size: 16px;
-		padding: 10px;
-		background: rgba(169, 169, 169, 0.5);
-		border-radius: 5px;
-	}
-
-
-
-	}
-</style>
 </head>
 <body>
 <script src="js/three.min.js"></script>
@@ -117,17 +19,17 @@
 		<td valign="top">
 			<div id="container"></div>
 				<div id='dayinfo' class='test1'>
-					<div class='test2 abcd'>开始日期:<div id='startDate' class='symbol'></div></div>
-					<div class='test2'>补签天数:<div id='supplementCount' class='symbol'></div></div>
-					<div class='test2'>已签天数:<div id='completeCount' class='symbol'></div></div>
-					<div class='test2'>剩余天数:<div id='remainingCount' class='symbol'></div></div>
+					<div class='dayinfoBox big'>开始日期:<div id='startDate' class='symbol'></div></div>
+					<div class='dayinfoBox'>补签天数:<div id='supplementCount' class='symbol'></div></div>
+					<div class='dayinfoBox'>已签天数:<div id='completeCount' class='symbol'></div></div>
+					<div class='dayinfoBox'>剩余天数:<div id='remainingCount' class='symbol'></div></div>
 				</div>
 				<div id="menu" class="magictime puffIn">
 					<button id="table">Table</button>
 					<button id="sphere">Sphere</button>
 					<button id="helix">Helix</button>
 					<button id="grid">Grid</button>
-					<button id="getInfo" style="position: absolute;right: 5%;">get</button>
+					<button id="getInfo">get</button>
 				</div>
 			</div>
 		</td>
@@ -141,7 +43,7 @@
 		</td>
 	</tr>
 </table>
-<div id="detail" class="magictime puffIn" style="display:none">
+<div id="detail" class="magictime puffIn">
 	<div class="head">
 		<h1></h1>
 	</div>
@@ -176,9 +78,9 @@
 
 			// 计算时间天数
 
-			this.a = '2019-1-31'
+			this.a = '2019-2-1'
 
-			this.b = '2019-2-3'
+			this.b = '2020-2-1'
 
 			// 剩余天数
 			this.aa = datedifference( +Date.now() , this.b)
@@ -264,6 +166,23 @@
 					const demo = that.cc - that.aa - Object.keys(that.removeList).length
 
 					if(!demo){
+						const make2 = $(`
+						<div class="popup">
+							<div class="content">次数到底为止，明天再来</div>
+						</div>
+						`);
+
+						let $maskClone2 = make2.clone()
+						$maskClone2.append('????')
+						$(document.body).append($maskClone2);
+						setTimeout(function () {
+							$($maskClone2).addClass('disappear');
+							setTimeout(function () {
+								$maskClone2.remove();
+							}, 1000);
+						}, 1000);
+
+
 						return console.log('次数到底为止，明天再来')
 					}
 
@@ -272,8 +191,8 @@
 					if (!count){
 
 						const make2 = $(`
-						<div class="test666">
-							<div class="tishi">没球了</div>
+						<div class="popup">
+							<div class="content">没球了</div>
 						</div>
 						`);
 						
@@ -281,7 +200,7 @@
 						$maskClone2.append('????')
 						$(document.body).append($maskClone2);
 						setTimeout(function () {
-							$($maskClone2).addClass('test');
+							$($maskClone2).addClass('disappear');
 							setTimeout(function () {
 								$maskClone2.remove();
 							}, 1000);
