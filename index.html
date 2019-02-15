@@ -166,48 +166,13 @@
 					const demo = that.cc - that.aa - Object.keys(that.removeList).length
 
 					if(!demo){
-						const make2 = $(`
-						<div class="popup">
-							<div class="content">次数到底为止，明天再来</div>
-						</div>
-						`);
-
-						let $maskClone2 = make2.clone()
-						$maskClone2.append('????')
-						$(document.body).append($maskClone2);
-						setTimeout(function () {
-							$($maskClone2).addClass('disappear');
-							setTimeout(function () {
-								$maskClone2.remove();
-							}, 1000);
-						}, 1000);
-
-
-						return console.log('次数到底为止，明天再来')
+						return popup('次数到底为止，明天再来')
 					}
-
+						
 					// 查询是否有时间可以玩
 					const count = Object.keys(that.table).length
 					if (!count){
-
-						const make2 = $(`
-						<div class="popup">
-							<div class="content">没球了</div>
-						</div>
-						`);
-						
-						let $maskClone2 = make2.clone()
-						$maskClone2.append('????')
-						$(document.body).append($maskClone2);
-						setTimeout(function () {
-							$($maskClone2).addClass('disappear');
-							setTimeout(function () {
-								$maskClone2.remove();
-							}, 1000);
-						}, 1000);
-
-
-						return console.log('没球了')
+						return popup('视图上已没卡牌')
 					}
 
 					// 随机数

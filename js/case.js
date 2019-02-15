@@ -8,7 +8,24 @@ if (!fs.existsSync(dir))
 	fs.mkdirSync(dir)
 
 
+function popup(content){
 
+	const make2 = $(`
+		<div class="popup">
+			<div class="content">${content}</div>
+		</div>
+	`);
+
+	let $maskClone2 = make2.clone()
+	$(document.body).append($maskClone2);
+	setTimeout(function () {
+		$($maskClone2).addClass('disappear');
+		setTimeout(function () {
+			$maskClone2.remove();
+		}, 1000);
+	}, 1000);
+
+ }
 
 var camera, scene, renderer, pager, mask ,iframe ,detail;
 var controls;
