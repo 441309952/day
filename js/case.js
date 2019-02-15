@@ -96,7 +96,7 @@ function datedifference(sDate1, sDate2) {
 	return iDays < 0 ? 0 : iDays
 };
 
-function initDetail({  author = 0, fun }){
+function initDetail({  author = 0, fun , target }){
 
 	var dt = $(detail.clone());
 	$('div.head h1', dt).text('信息详情');
@@ -104,7 +104,7 @@ function initDetail({  author = 0, fun }){
 	$('div.body table tr td p', dt).text(`存储金额: ${priceSwitch(author)}`);
 	$('div.body table tr td button', dt).text(`签到`).click(function (e) {
 		e.stopPropagation();
-		fun()
+		fun.call(target)
 	})
 
 	return dt.show();

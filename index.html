@@ -140,6 +140,68 @@
 			animate();
 
 		}
+		
+		clickFun(){
+
+			const that = this
+
+			const demo = that.cc - that.aa - Object.keys(that.removeList).length
+
+			if (!demo) {
+				return popup('次数到底为止，明天再来')
+			}
+
+			// 查询是否有时间可以玩
+			const count = Object.keys(that.table).length
+			if (!count) {
+				return popup('视图上已没卡牌')
+			}
+
+			// 随机数
+			const test = Math.floor(Math.random() * count)
+
+			// 结果数字
+			const jieguo = Object.keys(that.table)[test]
+
+			$('div.body table tr td h1').text(`此次签到${that.table[jieguo].name}`);
+
+			// 删除
+			delete that.table[jieguo]
+
+			// 添加
+			that.removeList[Object.keys(that.removeList).length + 1] = { date: moment().format('YY-M-D HH:mm:ss.SSS'), value: jieguo }
+
+			that.countAA += parseInt(jieguo)
+
+			$('div.body table tr td p').text(`存储金额: ${priceSwitch(that.countAA)}`);
+
+
+
+			shoudayinfo(that)
+
+
+			scene.remove(objects[jieguo]);
+
+			delete objects[jieguo]
+
+			delete targets['table'][jieguo]
+
+			delete targets['sphere'][jieguo]
+
+			delete targets['helix'][jieguo]
+
+			delete targets['grid'][jieguo]
+
+			const dataFile = path.resolve(dir, `./${that.a}至${that.b}.js`)
+
+			console.log(that.removeList)
+
+
+
+			fs.writeFileSync(dataFile, JSON.stringify(that.removeList))
+
+			
+		}
 
 		fun(){
 			
@@ -161,65 +223,8 @@
 
 			$maskClone.append(initDetail({
 				author : that.countAA,
-				fun : function(){
-
-					const demo = that.cc - that.aa - Object.keys(that.removeList).length
-
-					if(!demo){
-						return popup('次数到底为止，明天再来')
-					}
-						
-					// 查询是否有时间可以玩
-					const count = Object.keys(that.table).length
-					if (!count){
-						return popup('视图上已没卡牌')
-					}
-
-					// 随机数
-					const test = Math.floor(Math.random() * count)
-
-					// 结果数字
-					const jieguo = Object.keys(that.table)[test]
-
-					$('div.body table tr td h1').text(`此次签到${that.table[jieguo].name}`);
-
-					// 删除
-					delete that.table[jieguo]
-
-					// 添加
-					that.removeList[Object.keys(that.removeList).length + 1] = { date: moment().format('YY-M-D HH:mm:ss.SSS'), value: jieguo }
-
-					that.countAA += parseInt(jieguo)
-
-					$('div.body table tr td p').text(`存储金额: ${priceSwitch(that.countAA)}`);
-
-					
-
-					shoudayinfo(that)
-
-						
-					scene.remove(objects[jieguo]);
-
-					delete objects[jieguo]
-
-					delete targets['table'][jieguo]
-
-					delete targets['sphere'][jieguo]
-
-					delete targets['helix'][jieguo]
-
-					delete targets['grid'][jieguo]
-
-					const dataFile = path.resolve(dir, `./${that.a}至${that.b}.js`)
-					
-					console.log(that.removeList)
-
-					
-
-					fs.writeFileSync(dataFile, JSON.stringify(that.removeList))
-
-
-				}
+				fun : that.clickFun,
+				target : this
 			}));
 
 			$(document.body).append($maskClone);
