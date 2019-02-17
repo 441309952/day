@@ -204,6 +204,8 @@ function init(table , callback) {
 function transform( target, duration ) {
 
 	var targetaa = targets[target]
+
+	console.log(targets)
 	
 
 	TWEEN.removeAll();

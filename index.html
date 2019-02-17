@@ -141,7 +141,8 @@
 			if (!fs.existsSync(dir))
 				fs.mkdirSync(dir)
 
-			this.dataFileDir = path.resolve(dir, `./${this.startDate}至${this.endDate}.js`)
+			this.dataFileDirname = `${ this.startDate } 至 ${ this.endDate }`
+			this.dataFileDir = path.resolve(dir, `./${this.dataFileDirname}.js`)
 
 			// 剩余天数
 			this.aa = this.datedifference( +Date.now() , this.endDate)
@@ -161,6 +162,7 @@
 
 			// 创建数据
 			this.table = {}
+			console.log(this.table)
 			this.remainingList.forEach((value) => this.table[value] = { name: value })
 
 			// 显示数据
@@ -300,7 +302,7 @@
 			$('div.body table tr td p').text(`存储金额: ${priceSwitch(this.countAA)}`);
 
 			const startDate = document.getElementById('startDate')
-			startDate.innerText = `${this.startDate} 至 ${this.endDate}`
+			startDate.innerText = this.dataFileDirname
 
 			const supplementCount = document.getElementById('supplementCount')
 			supplementCount.innerText = this.cc - this.aa - Object.keys(this.removeList).length
@@ -324,19 +326,20 @@
 
 			this.countAA = this.countAA + parseInt(jieguo)
 
+			scene.remove(objects[jieguo]);
+
 			delete objects[jieguo]
 			delete targets['table'][jieguo]
 			delete targets['sphere'][jieguo]
 			delete targets['helix'][jieguo]
 			delete targets['grid'][jieguo]
-			scene.remove(objects[jieguo]);
 
 			this.removeListLocalData = this.removeList
 
 		}
 	}
 
-	new DepositRecord({ startDate : '2018-2-1'  , endDate : '2019-2-1' })
+	new DepositRecord({ startDate : '2018-2-1'  , endDate : '2018-5-4' })
 
 
 </script>
