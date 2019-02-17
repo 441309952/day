@@ -74,64 +74,96 @@
 
 	class DepositRecord {
 
-		constructor(){
+		// 写入本地数据
+		set removeListLocalData(x) {
+
+			console.log(x)
+
+			const dataFile = path.resolve(dir, `./${this.a}至${this.b}.js`)
+
+			fs.writeFileSync(dataFile, JSON.stringify(this.removeList))
+
+			console.log(x)
+		}
+
+		// 读取本地数据
+		get removeListLocalData() {
+			const dataFiles = path.resolve(dir, `./${this.a}至${this.b}.js`)
+			if (!fs.existsSync(dataFiles))
+				fs.writeFileSync(dataFiles, '')
+
+			const fsinfo = fs.readFileSync(dataFiles)
+
+			try {
+				return JSON.parse(fsinfo.toString())
+			} catch (e) {
+				return {}
+			}
+		}
+
+		// 获取已签到日期
+		get remainingList() {
+			
+			let a = []
+			Object.keys(this.removeList).forEach((index) => {
+
+				a.push(parseInt(this.removeList[index]['value']))
+
+			})
+
+			return this.dayList.filter((value) => {
+				return !a.includes(value)
+			})
+
+		}
+
+		// 修改修改视图
+		set countAA(value){
+			this.initDetailData()
+		}
+
+		// 获取总存储金额
+		get countAA() {
+
+			let a = 0
+			Object.keys(this.removeList).forEach((index, value, array) => {
+				a += parseInt(this.removeList[index].value)
+			})
+
+			return a
+		}
+
+		
+		constructor({ startDate, endDate}){
 
 			// 计算时间天数
+			this.a = startDate
 
-			this.a = '2019-2-1'
-
-			this.b = '2020-2-1'
+			this.b = endDate
 
 			// 剩余天数
-			this.aa = datedifference( +Date.now() , this.b)
+			this.aa = this.datedifference( +Date.now() , this.b)
 
 			// 过去天数
-			this.bb = datedifference(+Date.now(),this.a)
+			this.bb = this.datedifference(+Date.now(),this.a)
 
 			// 计算天数天数
-			this.cc = datedifference(this.a, this.b)
+			this.cc = this.datedifference(this.a, this.b)
 
 			this.dayList = []
 
 			// 遍历多个格子
 			for (let i = 1; i <= this.cc; i++) { this.dayList.push(i) }
 
-			
-			// 过滤已签到的日子
-			const dataFiles = path.resolve(dir, `./${this.a}至${this.b}.js`)
-			if(!fs.existsSync(dataFiles))
-				fs.writeFileSync(dataFiles, '')
-
-			
-			const fsinfo = fs.readFileSync(path.resolve(dir, `./${this.a}至${this.b}.js`))
-			try{
-				this.removeList = JSON.parse(fsinfo.toString())
-			}catch(e){
-				this.removeList = {}
-			}
-
-			let a = []
-			Object.keys(this.removeList).forEach((index)=>{
-				
-				a.push(parseInt(this.removeList[index]['value']))
-
-			})
-
-			this.remainingList = this.dayList.filter((value) =>{
-				return !a.includes(value)
-			})
-
-			this.countAA = 0
-			Object.keys(this.removeList).forEach((index,value,array)=>{
-				this.countAA += parseInt(this.removeList[index].value)
-			})
+			// 获取已签到数据
+			this.removeList = this.removeListLocalData
 
 			// 创建数据
 			this.table = {}
 			this.remainingList.forEach((value) => this.table[value] = { name: value })
 
 			// 显示数据
-			shoudayinfo(this)
+			this.initDetailData()
 
 			// 初始化动画
 			init(this.table, () => {
@@ -141,6 +173,7 @@
 
 		}
 		
+		// 点击签到事件
 		clickFun(){
 
 			const that = this
@@ -148,61 +181,27 @@
 			const demo = that.cc - that.aa - Object.keys(that.removeList).length
 
 			if (!demo) {
-				return popup('次数到底为止，明天再来')
+				return this.popup('次数到底为止，明天再来')
 			}
 
 			// 查询是否有时间可以玩
 			const count = Object.keys(that.table).length
 			if (!count) {
-				return popup('视图上已没卡牌')
+				return this.popup('视图上已没卡牌')
 			}
 
 			// 随机数
-			const test = Math.floor(Math.random() * count)
-
-			// 结果数字
-			const jieguo = Object.keys(that.table)[test]
+			const jieguo = Object.keys(that.table)[ Math.floor(Math.random() * count) ]
 
 			$('div.body table tr td h1').text(`此次签到${that.table[jieguo].name}`);
 
-			// 删除
-			delete that.table[jieguo]
-
-			// 添加
-			that.removeList[Object.keys(that.removeList).length + 1] = { date: moment().format('YY-M-D HH:mm:ss.SSS'), value: jieguo }
-
-			that.countAA += parseInt(jieguo)
-
-			$('div.body table tr td p').text(`存储金额: ${priceSwitch(that.countAA)}`);
-
-
-
-			shoudayinfo(that)
-
-
-			scene.remove(objects[jieguo]);
-
-			delete objects[jieguo]
-
-			delete targets['table'][jieguo]
-
-			delete targets['sphere'][jieguo]
-
-			delete targets['helix'][jieguo]
-
-			delete targets['grid'][jieguo]
-
-			const dataFile = path.resolve(dir, `./${that.a}至${that.b}.js`)
-
-			console.log(that.removeList)
-
-
-
-			fs.writeFileSync(dataFile, JSON.stringify(that.removeList))
+			this.deleteTableInfo(jieguo)
 
 			
+
 		}
 
+		// 点击get事件
 		fun(){
 			
 			// 创建弹出及事件
@@ -218,22 +217,125 @@
 
 				}, 1000);
 			});
-
-			const that = this
-
+			
 			$maskClone.append(initDetail({
-				author : that.countAA,
-				fun : that.clickFun,
+				fun : this.clickFun,
 				target : this
 			}));
 
 			$(document.body).append($maskClone);
 
+			this.initDetailData()
 		}
 
+		// 计算时间差
+		datedifference(sDate1, sDate2) {
+			var dateSpan,
+				iDays;
+
+			sDate1 = typeof sDate1 === 'string' ? Date.parse(sDate1) : sDate1;
+			sDate2 = typeof sDate2 === 'string' ? Date.parse(sDate2) : sDate2;
+			dateSpan = sDate2 - sDate1;
+
+			iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
+			return iDays < 0 ? 0 : iDays
+		}
+
+		// 弹窗
+		popup(content) {
+
+			const make2 = $(`
+				<div class="popup">
+					<div class="content">${content}</div>
+				</div>
+			`);
+
+			let $maskClone2 = make2.clone()
+			$(document.body).append($maskClone2);
+			setTimeout(function () {
+				$($maskClone2).addClass('disappear');
+				setTimeout(function () {
+					$maskClone2.remove();
+				}, 1000);
+			}, 1000);
+
+		}
+
+		// 更新视图信息
+		initDetailData(){
+
+			// 计算金额
+			let priceSwitch = (x)=>{
+
+					x = String(x)
+
+					//每三位用一个逗号隔开
+					var leftNum = x.split(".")[0];
+
+					//定义数组记录截取后的价格
+					var resultArray = new Array();
+
+					if (leftNum.length > 3) {
+						var i = true;
+						while (i) {
+							resultArray.push(leftNum.slice(-3));
+							leftNum = leftNum.slice(0, leftNum.length - 3);
+							if (leftNum.length < 4) {
+								i = false;
+							}
+						}
+						//由于从后向前截取，所以从最后一个开始遍历并存到一个新的数组，顺序调换
+						var sortArray = new Array();
+						for (var i = resultArray.length - 1; i >= 0; i--) {
+							sortArray.push(resultArray[i]);
+						}
+						x = `${leftNum},${sortArray.join(",")}`
+					}
+
+					return `￥${x}.00`
+
+				}
+
+			$('div.body table tr td p').text(`存储金额: ${priceSwitch(this.countAA)}`);
+
+			const startDate = document.getElementById('startDate')
+			startDate.innerText = `${this.a} 至 ${this.b}`
+
+			const supplementCount = document.getElementById('supplementCount')
+			supplementCount.innerText = this.cc - this.aa - Object.keys(this.removeList).length
+
+			const completeCount = document.getElementById('completeCount')
+			completeCount.innerText = Object.keys(this.removeList).length
+
+			const remainingCount = document.getElementById('remainingCount')
+			remainingCount.innerText = this.aa
+
+		}
+
+		//  移除数据，并保存数据
+		deleteTableInfo(jieguo){
+
+			// 删除
+			delete this.table[jieguo]
+
+			// 添加
+			this.removeList[Object.keys(this.removeList).length + 1] = { date: moment().format('YY-M-D HH:mm:ss.SSS'), value: jieguo }
+
+			this.countAA = this.countAA + parseInt(jieguo)
+
+			delete objects[jieguo]
+			delete targets['table'][jieguo]
+			delete targets['sphere'][jieguo]
+			delete targets['helix'][jieguo]
+			delete targets['grid'][jieguo]
+			scene.remove(objects[jieguo]);
+
+			this.removeListLocalData = this.removeList
+
+		}
 	}
 
-	new DepositRecord()
+	new DepositRecord({ startDate : '2018-2-1'  , endDate : '2019-2-1' })
 
 
 </script>

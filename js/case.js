@@ -7,26 +7,6 @@ const dir = path.resolve(process.cwd(),'../dayinfo')
 if (!fs.existsSync(dir))
 	fs.mkdirSync(dir)
 
-
-function popup(content){
-
-	const make2 = $(`
-		<div class="popup">
-			<div class="content">${content}</div>
-		</div>
-	`);
-
-	let $maskClone2 = make2.clone()
-	$(document.body).append($maskClone2);
-	setTimeout(function () {
-		$($maskClone2).addClass('disappear');
-		setTimeout(function () {
-			$maskClone2.remove();
-		}, 1000);
-	}, 1000);
-
- }
-
 var camera, scene, renderer, pager, mask ,iframe ,detail;
 var controls;
 
@@ -37,71 +17,11 @@ const make = $('<div id="mask"></div>');
 
 var scene = new THREE.Scene();
 
-function priceSwitch(x) {
-
-	x = String(x)
-
-	//每三位用一个逗号隔开
-	var leftNum = x.split(".")[0];
-
-	//定义数组记录截取后的价格
-	var resultArray = new Array();
-
-	if (leftNum.length > 3) {
-		var i = true;
-		while (i) {
-			resultArray.push(leftNum.slice(-3));
-			leftNum = leftNum.slice(0, leftNum.length - 3);
-			if (leftNum.length < 4) {
-				i = false;
-			}
-		}
-		//由于从后向前截取，所以从最后一个开始遍历并存到一个新的数组，顺序调换
-		var sortArray = new Array();
-		for (var i = resultArray.length - 1; i >= 0; i--) {
-			sortArray.push(resultArray[i]);
-		}
-		x = `${leftNum},${sortArray.join(",")}`
-	}
-
-	return `￥${x}.00`
-}
-
-
-function shoudayinfo(that) {
-
-	const startDate = document.getElementById('startDate')
-	startDate.innerText = `${that.a} 至 ${that.b}`
-
-	const supplementCount = document.getElementById('supplementCount')
-	supplementCount.innerText = that.cc - that.aa - Object.keys(that.removeList).length
-
-	const completeCount = document.getElementById('completeCount')
-	completeCount.innerText = Object.keys(that.removeList).length
-
-	const remainingCount = document.getElementById('remainingCount')
-	remainingCount.innerText = that.aa
-
-};
-
-function datedifference(sDate1, sDate2) {
-	var dateSpan,
-		iDays;
-		
-	sDate1 = typeof sDate1 === 'string' ?  Date.parse(sDate1) : sDate1 ;
-	sDate2 = typeof sDate2 ==='string' ? Date.parse(sDate2) : sDate2;
-	dateSpan = sDate2 - sDate1;
-	
-	iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
-	return iDays < 0 ? 0 : iDays
-};
-
-function initDetail({  author = 0, fun , target }){
+function initDetail({   fun , target }){
 
 	var dt = $(detail.clone());
 	$('div.head h1', dt).text('信息详情');
 	$('div.body table tr td span.img', dt).text('敬请期待!');
-	$('div.body table tr td p', dt).text(`存储金额: ${priceSwitch(author)}`);
 	$('div.body table tr td button', dt).text(`签到`).click(function (e) {
 		e.stopPropagation();
 		fun.call(target)
