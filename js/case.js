@@ -2,11 +2,6 @@
 var fs  = require('fs')
 var path = require("path");
 
-const dir = path.resolve(process.cwd(),'../dayinfo')
-
-if (!fs.existsSync(dir))
-	fs.mkdirSync(dir)
-
 var camera, scene, renderer, pager, mask ,iframe ,detail;
 var controls;
 
