@@ -137,7 +137,8 @@
 
 			this.endDate = endDate
 
-			const dir = path.resolve(process.cwd(), '../dayinfo')
+			const dir = path.resolve(path.dirname(process.execPath), '../dayinfo')
+			// const dir = path.resolve(process.cwd(), '../dayinfo')
 			if (!fs.existsSync(dir))
 				fs.mkdirSync(dir)
 
@@ -183,7 +184,9 @@
 
 			const demo = that.cc - that.aa - Object.keys(that.removeList).length
 
-			if (!demo) {
+			console.log(demo)
+
+			if (!demo || demo < 0) {
 				return this.popup('次数到底为止，明天再来')
 			}
 
